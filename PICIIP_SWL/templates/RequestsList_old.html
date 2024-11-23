@@ -1,0 +1,75 @@
+{% extends "base_index.html" %}
+
+{% load static %}
+
+{% block title %} REQUEST LIST {% endblock title %}
+
+{% block main_contents %}
+
+    <div class="container-fluid pt-3 px-3" style="height: 40vh;">
+        <!-- Container for jqxGrid -->
+        <div id="jqxGrid" class="grid-container"></div>
+    </div>
+
+    <!-- Sales Chart Start -->
+    <div class="container-fluid pt-3 px-3">
+        <div class="row g-3">
+
+            <div class="col-sm-12 col-xl-3 col-lg-3 col-md-4">
+                <div class="bg-secondary text-center rounded p-1">
+                    <p class="h4 text-center">Map Layers</p>
+                    <div class="col-sm-12" id="divMapLayers" style="height: 66vh; overflow: auto"></div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-9 col-lg-9 col-md-8">
+                <div class="bg-secondary text-center rounded p-1">
+                    <div id="mapDiv" style="height: 70vh;">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Sales Chart End -->
+    <!-- Container for potential messages -->
+    <div id="message"></div>
+
+{% endblock main_contents %}
+
+{% block extra_styles %}
+
+    <link rel="stylesheet"
+          href="https://jqwidgets.com/public/jqwidgets/styles/jqx.base.css"/>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+{% endblock extra_styles %}
+
+{% block extra_scripts %}
+    <!-- Include jqxGrid CSS and JS -->
+    <script src="https://jqwidgets.com/public/jqwidgets/jqx-all.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+    <script src="{% static "js/PlotMapVM.js" %}"></script>
+    <script type="text/javascript">
+    let plotRequestURL = '{% url "get_user_plot_requests" %}';
+        $(document).ready(function () {
+
+            $('#dashboardPage').removeClass('active');
+            $('#plotRequestPage').removeClass('active');
+            $('#requestListPage').addClass('active');
+
+            let mapVM = new PlotMapVM();
+            mapVM.initMap();
+
+            mapVM.initDataGrid();
+
+        });
+
+    </script>
+
+{% endblock extra_scripts %}

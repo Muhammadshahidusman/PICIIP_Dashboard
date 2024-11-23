@@ -1,0 +1,161 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static "img/gopunjab-transparent-logo.png" %}">
+    <link rel="icon" type="image/png" href="{% static "img/gopunjab-transparent-logo.png" %}">
+    <title>
+        SDSS Sahiwal
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+    <!-- Nucleo Icons -->
+    <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-icons.css" %}" rel="stylesheet"/>
+    <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-svg.css" %}" rel="stylesheet"/>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-svg.css" %}" rel="stylesheet"/>
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static "vendor/argon-dashboard/assets/css/argon-dashboard.css" %}?v=2.0.4"
+          rel="stylesheet"/>
+          <style>
+            .field-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+}
+.field-icon:hover {
+    color: #333;
+}
+
+          </style>
+</head>
+
+<body class="">
+
+<main class="main-content  mt-0">
+    <section>
+        <div class="page-header min-vh-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                        <div class="card card-plain">
+                            <div class="d-flex mt-5 pt-5 pb-0 justify-content-center gap-4">
+                                <img src="{% static "vendor/argon-dashboard/assets/punjabgovt.png" %}" height="60"
+                                     width="70"/>
+                                <img src="{% static "vendor/argon-dashboard/assets/PICIIP.png" %}" height="60"
+                                     width="60"/>
+                            </div>
+                            <div class="card-header pb-0 text-center pt-2">
+                                <h4 class="font-weight-bolder">Decision Support System</h4>
+                            </div>
+                            <div class="card-header pb-0 text-start">
+                                <h4 class="font-weight-bolder">Sign In</h4>
+                                <p class="mb-0">Enter your email and password to sign in</p>
+                            </div>
+                            <div class="card-body">
+                                <form role="form" method="post" action="">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Username"
+                                               aria-label="Username">
+                                    </div>
+                                    <div class="mb-3 position-relative">
+                                        <input type="password" id="password" name="password" class="form-control form-control-lg"
+                                               placeholder="Password" aria-label="Password">
+                                        <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                    
+                                    <div class="mb-2">
+                                        <select class="form-select form-control-lg">
+                                            <option>Sahiwal</option>
+                                            <option>Sialkot</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">
+                                            Sign In
+                                        </button>
+                                    </div>
+                                    {% if next %}
+                                        <input type="hidden" name="next" value="{{ next }}"/>
+                                    {% else %}
+                                        <input type="hidden" name="next" value={% url "home" %}>
+                                    {% endif %}
+                                    {% if form.errors %}
+                                        <p style="color: #ff0099">* Incorrect username and password. Please try
+                                            again.</p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                            <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                <p class="mb-4 text-sm mx-auto">
+                                    Don't have an account?
+                                    <a href="{% url "signup" %}" class="text-primary text-gradient font-weight-bold">Sign
+                                        up</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+                        <div class="position-relative bg-gradient-success h-100 m-0 p-0 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
+                             style="background-size: cover;">
+                            <video src="{% static "vendor/argon-dashboard/assets/login-bg-video.mp4" %}" autoplay muted
+                                   loop playsinline>
+                                <img src="{% static "vendor/argon-dashboard/assets/fallback-image.jpg" %}"
+                                     alt="Background Video"
+                                     style="width:100%; height:auto;">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Your jQuery inclusion -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--   Core JS Files   -->
+<script src="{% static "vendor/argon-dashboard/assets/js/core/popper.min.js" %}"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/core/bootstrap.min.js" %}"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/plugins/perfect-scrollbar.min.js" %}"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/plugins/smooth-scrollbar.min.js" %}"></script>
+
+<script>
+    $(document).ready(function() {
+    $(".toggle-password").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash"); 
+        let input = $($(this).attr("toggle"));
+        if (input.attr("type") === "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+});
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="{% static "vendor/argon-dashboard/assets/js/argon-dashboard.min.js" %}?v=2.0.4"></script>
+</body>
+
+</html>

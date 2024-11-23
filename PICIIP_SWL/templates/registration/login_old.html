@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PICIIP</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #e6ead0, #9ad4ca);
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .login-left {
+            width: 60%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+            box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-left video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .login-right {
+            padding: 40px;
+            width: 30%;
+            z-index: 2;
+            border-radius: 10px;
+            margin-right: 5%;
+        }
+
+        .login-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Keep logos at the edges */
+            margin-bottom: 20px;
+            margin-left: -40px;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .login-header img {
+            width: 90px; /* Adjust size as needed */
+            flex-shrink: 0; /* Prevent logos from shrinking */
+        }
+
+        .header-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #076f4a;
+            text-align: center;
+            flex-grow: 1; /* Allow title to take available space */
+            margin: 0 10px; /* Add some margin */
+        }
+
+        h1 {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .underline {
+            border-bottom: 2px solid #076f4a;
+            width: 100px;
+            margin: 0 auto 20px;
+        }
+
+        .form-group input {
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+        }
+
+        .form-group input:focus {
+            border-color: #076f4a;
+            box-shadow: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            background-color: #076f4a;
+            color: #fff;
+            border-radius: 25px;
+            padding: 10px;
+        }
+
+        .btn-login:hover {
+            background-color: #065c41;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+            color: #076f4a;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link a {
+            color: #076f4a;
+        }
+
+        .dropdown-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .dropdown-container select {
+            width: 100%;
+            border-radius: 25px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Media query for mobile view */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column; /* Stack form and video vertically */
+                justify-content: flex-start;
+            }
+
+            .login-left {
+                width: 100%;
+                height: 450px; /* Adjust height for mobile */
+                margin-top: 20px;
+                clip-path: none;
+            }
+
+            .login-left video {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+
+            .login-right {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .login-header {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 440px;
+            }
+
+            .login-header img {
+                margin-bottom: 10px;
+                width: 80px;
+            }
+
+            .header-title {
+                font-size: 1.2em;
+                margin: 10px 0;
+                white-space: nowrap; /* Prevent text wrapping */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="login-left">
+        <video src="{% static 'img/login-bg-video.mp4' %}" autoplay muted loop playsinline>
+            <img src="{% static 'img/gopunjab-white-logo.png' %}" alt="Background Video"
+                 style="width:100%; height:auto;">
+        </video>
+    </div>
+
+    <div class="login-right">
+        <div class="login-header">
+            <a href="#"><img src="{% static "img/gopunjab-white-logo.png" %}" alt="GOP Logo"></a>
+            <div class="header-title">Decision Support System</div>
+            <a href="#"><img src="{% static "img/piciip-logo.png" %}" alt="PICIIP Logo"></a>
+        </div>
+        <h1 class="text-center">Login</h1>
+        <div class="underline"></div>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="User Name" id="username" name="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+            </div>
+            <div class="dropdown-container">
+                <select class="form-control">
+                    <option value="sahiwal">MC Sahiwal</option>
+                    <option value="sialkot">MC Sialkot</option>
+                </select>
+            </div>
+            <button class="btn btn-login mt-4" value="login" type="submit">Sign In</button>
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}"/>
+            {% else %}
+                <input type="hidden" name="next" value={% url "home" %}>
+            {% endif %}
+
+            <div class="register-link mt-3">
+                <p>Don't have an account yet, <a href="{% url "signup" %}">Register</a></p>
+            </div>
+
+            {% if form.errors %}
+                <p style="color: #ff0099">* Incorrect username and password. Please try again.</p>
+            {% endif %}
+
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

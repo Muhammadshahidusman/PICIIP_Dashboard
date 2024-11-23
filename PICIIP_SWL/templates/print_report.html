@@ -1,0 +1,373 @@
+{% load static %}
+{% load bootstrap_ui_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plot Request Report</title>
+    <style type="text/css">
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 5px;
+            background-color: #fff;
+        }
+
+        .table th,
+        .table td {
+            padding: 5px;
+            vertical-align: top;
+            border-top: 1px solid #000;
+            text-align: center;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #000;
+        }
+
+        .table tbody + tbody {
+            border-top: 2px solid #000;
+        }
+
+        .list-group {
+            display: block;
+            width: 100%;
+            list-style: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .list-group p {
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            list-style: none;
+            font-size: 1.1em;
+        }
+
+        {#        .background {#}
+        {#            box-sizing: border-box;#}
+        {#            width: 100%;#}
+        {#            height: 150px;#}
+        {#            padding: 3px;#}
+        {#            background-image: url("/media/static_maps/{{ object_pdf.location_image }}");#}
+        {#            border: 1px solid black;#}
+        {#            background-size: 100% 100%;#}
+        {#        }#}
+
+        img {
+            zoom: 80%;
+            width: 800px;
+            height: 600px;
+            object-fit: cover;
+        }
+
+    </style>
+
+</head>
+<body>
+{{ sourceHtml|safe }}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header" style=" background-color: #4e5944;">
+            <h2 align="center" style="  font-size: 1.675em;padding: 20px 5px; margin: 0px; color:#ffffec; ">Disaster
+                Impact Assessment <br>of<br>{{ object_pdf.project_name }}</h2>
+        </div>
+        <div class="card-header">
+            <h1 style="color: #4e5944"> Project Location</h1>
+        </div>
+        <img src="/media/static_maps/{{ object_pdf.location_image }}" width="1200" height="800">
+        <div class="card-header">
+            <h1 style="color: #4e5944"> Project Description</h1>
+        </div>
+
+        <table class="table">
+            <thead>
+            {#            <tr>#}
+            {#                <th>Project Name</th>#}
+            {#                <th>Project Type</th>#}
+            {##}
+            {#            </tr>#}
+            </thead>
+            <tbody>
+
+            <tr style="background-color: #d8ffc6">
+                <td>
+                <th>Project Name:</th>
+                </td>
+                <td>{{ object_pdf.project_name }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>Project Type:</th>
+                </td>
+                <td>{{ object_pdf.project_type }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>Project Extent:</th>
+                </td>
+                <td>{{ object_pdf.project_extend }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>Climate Conditions:</th>
+                </td>
+                <td>{{ object_pdf.project_climate_condition }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>RainFall Value:</th>
+                </td>
+                <td>{{ object_pdf.rainfall_value }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>RainFall Return Period:</th>
+                </td>
+                <td>{{ object_pdf.return_period }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>Location Feature:</th>
+                </td>
+                <td>{{ object_pdf.project_location_features }}</td>
+            </tr>
+            <tr>
+                <td>
+                <th>Marked Public Places Near Project:</th>
+                </td>
+                <td>{{ object_pdf.public_places_nearby }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-header">
+        <h1 style="color: #4e5944"> Hazard Identification</h1>
+        <h2 style="color: #4e5944">i. Geological Phenomena</h2>
+    </div>
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <td>
+            <th>Recongized Hazard:</th>
+            </td>
+            <td>{{ object_pdf.recongized_hazard }}</td>
+        </tr>
+        <tr>
+            <td>
+            <th>Landslide:</th>
+            </td>
+            <td>{{ object_pdf.landslide }}</td>
+        </tr>
+
+        <tr>
+            <td>
+            <th>Slope failure:</th>
+            </td>
+            <td>{{ object_pdf.slope_failure }}</td>
+        </tr>
+        <tr>
+            <td>
+            <th>Heavy Rain:</th>
+            </td>
+            <td>{{ object_pdf.heavy_rain }}</td>
+        </tr>
+        <tr>
+            <td>
+            <th>Flood:</th>
+            </td>
+            <td>{{ object_pdf.flood }}</td>
+        </tr>
+        <tr>
+            <td>
+            <th>Glof:</th>
+            </td>
+            <td>{{ object_pdf.glof }}</td>
+        </tr>
+        <tr>
+            <td>
+            <th>Earthquake:</th>
+            </td>
+            <td>{{ object_pdf.earthquake }}</td>
+        </tr>
+        <tr>
+            <td>
+            <th>Other:</th>
+            </td>
+            <td>{{ object_pdf.other }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="card-header">
+        <h2 style="color: #4e5944">ii. Hazard Conservation along the project</h2>
+    </div>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>
+            <th>Conditions relevant to the project</th>
+            </td>
+            <td>
+            <th>Hazard Data Available?</th>
+            </td>
+            {#                <th>Return Period</th>#}
+        </tr>
+        <tr>
+            <td>
+            <th>Landslide data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.landslide_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Flood data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.flood_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Forest reserves data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.forest_reserves_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Nature reserves data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.nature_reserves_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Riverine conservation data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.riverine_conservation_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Wetlands data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.wetlands_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Archeological data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.archeological_data }}</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <th>Culture data:</th>
+            </td>
+            <td>
+            <th>{{ object_pdf.cultural_data }}</th>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+    {#    Section 3 MHVRA ANALYSIS#}
+
+    <table class="table"></table>
+    <h1 style="color: #4e5944">Mitigation Design and Plans</h1>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>Is the project prepared keeping in view the Building Codes of Pakistan 2007?</td>
+            <td>{{ object_pdf.building_codes }}</td>
+        </tr>
+        <tr>
+            <td>Is the project prepared keeping in view the principal Building bye-laws?</td>
+            <td>{{ object_pdf.building_by_law }}</td>
+        </tr>
+        <tr>
+            <td>Is the Project prepared keeping in view the checklist for Disaster Risk Reduction (Infrastructure
+                Sector), circulated by Planning Commission of Pakistan?
+            </td>
+            <td>{{ object_pdf.disaster_risk_reduction }}</td>
+        </tr>
+        <tr>
+            <td>In case of flood hazard, is the project prepared keeping in view the guidelines of Federal Flood
+                Commission of Pakistan?
+            </td>
+            <td>{{ object_pdf.flood_hazard_guideline }}</td>
+        </tr>
+        <tr>
+            <td>Is the project incorporate the prevailing Environmental Impact Assessment (EIA)?</td>
+            <td>{{ object_pdf.environment_impact }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h1 style="color: #4e5944">Comments/Conclusions</h1>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>Comments</td>
+            <td>
+                <div name="editor" id="editor">{{ object_pdf.comments|safe }}</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {#    section 3#}
+    {#    {% if mhvra %}#}
+    {#      <h1 style="color: #4e5944">Multi Hazard Vulnerability and Risk Analysis </h1>#}
+    {#        <table>#}
+    {#         <tbody>#}
+    {#         <tr>#}
+    {#             <td><th>Hazard</th><th>Risk</th></td></tr>#}
+    {#            <tr>#}
+    {#                <td><td>Category:</td><td>Design Criteria</td><td>Value Mhvra</td><td>Unit</td></td>#}
+    {#             <td><td>Category:</td><td>Design Criteria</td><td>Value Mhvra</td><td>Unit</td></td>#}
+    {##}
+    {#         </tr>#}
+    {#         </tbody>#}
+    {#        </table>#}
+    {#        {% for item in mhvra %}#}
+    {#            <p>{{ item }}</p>#}
+    {##}
+    {#        {% endfor %}#}
+    {##}
+    {#    {% endif %}#}
+</div>
+</div>
+
+{#<script type="text/javascript" src="{% static "vendor/jqwidgets-ver5.6.0/jqx-all.js" %}"></script>#}
+
+<script>
+
+    {#    var commentsData = {{ object_pdf.comments|safe }};#}
+    {#    console.log(commentsData);#}
+    {#$(document).ready(function () {#}
+    {#    alert("in document load");#}
+    {#    project_id = #}
+    {#    create_jqx_grid(projectId)#}
+    {#    #}
+    {#           });#}
+</script>
+</body>
+</html>

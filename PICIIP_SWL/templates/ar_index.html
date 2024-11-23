@@ -1,0 +1,1997 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static "img/piciip.png" %}">
+    <link rel="icon" type="image/png" href="{% static "img/piciip.png" %}">
+    <title>
+        SDSS Sahiwal
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+    <!-- Nucleo Icons -->
+    <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-icons.css" %}" rel="stylesheet"/>
+    <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-svg.css" %}" rel="stylesheet"/>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-svg.css" %}" rel="stylesheet"/>
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{% static "vendor/argon-dashboard/assets/css/argon-dashboard.css" %}?v=2.0.4"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.css" %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
+    <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+    <link rel="stylesheet" href="https://jqwidgets.com/public/jqwidgets/styles/jqx.base.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+       
+.btn-close {
+    display: block; /* Ensure the button is displayed */
+    opacity: 1; /* Ensure the button is fully opaque */
+    background-color: transparent; /* Set background to transparent */
+    border: none; /* Remove any border */
+    width: 30px; /* Set a width for the button */
+    height: 30px; /* Set a height for the button */
+    position: relative; /* Position relative for better control */
+    z-index: 1; /* Ensure it is above other elements */
+}
+
+.btn-close::before {
+    content: '×'; /* Use a cross character for the close button */
+    font-size: 1.5rem; /* Adjust font size */
+    color: #000; /* Set the color of the close icon */
+    position: absolute; /* Position absolutely */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for centering */
+}
+        .map-icons {
+            display: flex;
+            justify-content: start;
+            margin-top: 20px;
+        }
+
+        .map-icons {
+            justify-content: center;
+        }
+
+        .map-icons img {
+            border-radius: 50%;
+            border: 3px solid rgba(2, 119, 8, 0.8);
+            margin: 0;
+            margin-left: -15px;
+        }
+
+        .map-icons img {
+            margin-left: -20px;
+        }
+
+        .map-icons img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .map-icons img:first-child {
+            margin-left: 0;
+        }
+
+        .leaflet-control-layers-list {
+            overflow: visible !important; /* Disable internal scrolling */
+            height: auto !important; /* Let it expand based on content */
+        }
+
+        @media (max-width: 991.98px) {
+            .heading-holder {
+                display: block !important;
+                width: 70% !important;
+            }
+
+            .heading-holder .input-group {
+                width: 100% !important;
+            }
+
+            #navbar {
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .heading-holder .card-header h4 {
+                width: 110px;
+            }
+        }
+  /* Hiding the default placeholder span */
+  .select2-selection__rendered {
+            display: none; /* Hide the rendered placeholder */
+        }
+        #jqxGrid {
+    width: 99% !important;
+}
+#divPZLayers .leaflet-control-layers-overlays label {
+    text-align: center !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+#loader {
+    position: fixed;
+    z-index: 9999; /* Ensure it's on top of all other content */
+    width: 100%; /* Take full width */
+    height: 100%; /* Take full height */
+    top: 0; /* Position at the top */
+    left: 0; /* Position at the left */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: none; /* Hidden by default */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    display: flex; /* Use flexbox for centering */
+}
+
+#loader img {
+    width: 50px;  /* Adjust loader image size */
+    height: 50px;
+}
+.mandatory {
+        color: red; /* Change the color to red */
+        font-weight: bold; /* Make it bold */
+    }
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+    padding-left: 3px !important;
+    padding-top: 3px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px; /* Rounded corners */
+}
+
+/* The slider when checked */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%; /* Round */
+    transition: .4s;
+}
+
+/* When the checkbox is checked, change the background and move the slider */
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+#ExistingLanduse
+{
+    padding-top: 12px;
+}
+#PICIIPProposal
+{
+    padding-top: 12px; 
+}
+#ProposedZone
+{
+    padding-top: 12px; 
+}
+.approved-row {
+    background-color: #d4edda; /* Light green */
+}
+
+.rejected-row {
+    background-color: #f8d7da; /* Light red */
+}
+.selected-row {
+    border: 2px solid #007bff; /* Change this to your desired border color */
+    background-color: #e7f1ff; /* Optional: Change background color */
+}
+#flush-collapseFive {
+        border: 2px solid #ddd; /* Light gray border */
+        border-radius: 8px; /* Rounded corners */
+        margin-left: 5px !important; 
+       width: 95% !important;
+    }
+.minimize-btn, #closePlotRequestModal {
+    background-color: transparent;
+    border: none;
+    color: #000; /* Icon color */
+    font-size: 18px;
+    padding: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.minimize-btn:hover, #closePlotRequestModal:hover {
+    background-color: #ffc107; /* Orange background on hover */
+    border-radius: 50%; /* Adds a rounded shape, similar to the close button */
+    color: #fff; /* White icon color on hover */
+}
+
+.minimize-btn:focus, #closePlotRequestModal:focus {
+    outline: none;
+}
+
+    </style>
+</head>
+<div id="loader" style="display:none;">
+    <img src="{% static "img/loader.gif" %}" alt="Loading..." />
+</div>
+<body class="g-sidenav-show   bg-gray-100">
+  
+<div class="min-height-300 bg-primary position-absolute w-100"></div>
+<aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
+       id="sidenav-main">
+    <div class="sidenav-header nav-logos">
+        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+           aria-hidden="true" id="iconSidenav"></i>
+        <a href="#" target="_blank">
+            <img src="{% static "img/gopunjab-transparent-logo.png" %}" class="navbar-brand-img h-100" alt="main_logo">
+        </a>
+        <a href="#" target="_blank">
+            <img src="{% static "img/piciip.png" %}" class="navbar-brand-img h-100" alt="main_logo">
+        </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link " href="{% url "home" %}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-book-bookmark text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Introduction</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{% url "home" %}">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+            </li>
+            {% if user.is_superuser == False %}
+                <li class="nav-item">
+                    <a class="nav-link " href="#" id="aPlotRequestModal">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-ruler-pencil text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">User Request</span>
+                    </a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="aRequestListModal">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-list text-primary text-sm opacity-10"></i>
+                    </div>                    
+
+                    <span class="nav-link-text ms-1">Requests List</span>
+                </a>
+            </li>
+            {% block sidenav_extra_links %}{% endblock sidenav_extra_links %}
+
+        </ul>
+        <hr class="horizontal dark mt-0">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="flush-headingOne">
+                    <button class="accordion-button collapsed nav-link" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false"
+                            aria-controls="flush-collapseOne">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-map text-primary text-sm opacity-10"></i>
+                            </div>
+                        <span>Administrative</span>
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse"
+                     aria-labelledby="flush-headingOne"
+                     data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" id="divAdminLayers">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="flush-headingTwo">
+                    <button class="accordion-button collapsed nav-link" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                            aria-controls="flush-collapseTwo">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-bullhorn text-warning text-sm opacity-10"></i>
+                            </div>
+                            
+                        <span>Notified Area</span>
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                     aria-labelledby="flush-headingTwo"
+                     data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" id="divNotifiedAreaLayers">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="flush-headingThree">
+                    <button class="accordion-button collapsed nav-link" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseThree" aria-expanded="false"
+                            aria-controls="flush-collapseThree">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-layer-group text-secondary text-sm opacity-10"></i>
+                            </div>
+                            
+                                <span id="ExistingLanduse">Existing Landuse 
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleAllLayers">
+                                        <span class="slider"></span>
+                                    </label>
+                                </span>
+                            
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse"
+                     aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" id="divExLULayers" style="max-height: 25vh; width: 93%; overflow: auto;">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="flush-headingFour">
+                    <button class="accordion-button collapsed nav-link" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFour" aria-expanded="false"
+                            aria-controls="flush-collapseFour">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-lightbulb text-warning text-sm opacity-10"></i>
+                            </div>                            
+                        <span id="PICIIPProposal">PICIIP Proposals 
+                            <label class="switch">
+                                <input type="checkbox" id="toggleproposalLayers">
+                                <span class="slider"></span>
+                            </label>
+                        </span>
+                    </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse"
+                     aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" id="divPPLayers">
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="flush-headingFive">
+                    <button class="accordion-button collapsed nav-link" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFive" aria-expanded="false"
+                            aria-controls="flush-collapseFive">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-globe text-info text-sm opacity-10"></i>
+                            </div>                            
+                            <span id="ProposedZone">Proposed Zones
+                                <label class="switch">
+                                    <input type="checkbox" id="toggleproposalALLLayers">
+                                    <span class="slider"></span>
+                                </label>
+                            </span>
+                    </button>
+                </h2>
+                <div id="flush-collapseFive" class="accordion-collapse collapse"
+                     aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body p-1">
+
+                        <div class="row m-2" id="divPZLayers" style="text-align: center !important;"></div>
+
+                        <!-- Inner Accordion -->
+                        <div class="accordion m-0" id="innerAccordion1">
+
+                            <!-- First Inner Accordion Item -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header " id="headingInnerOne">
+                                    <button class="accordion-button collapsed nav-link" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapseInnerOne" aria-expanded="false"
+                                            aria-controls="collapseInnerOne">
+                                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                                <i class="fa fa-city text-primary text-sm opacity-10"></i>
+                                            </div>
+                                                                                     
+                                            
+                                        <span>Residential</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseInnerOne" class="accordion-collapse collapse"
+                                     aria-labelledby="headingInnerOne" data-bs-parent="#innerAccordion1">
+                                    <div class="accordion-body" id="divResidentialLayers"
+                                         style="max-height: 25vh; overflow: auto;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Second Inner Accordion Item -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header " id="headingInnerTwo">
+                                    <button class="accordion-button collapsed nav-link" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapseInnerTwo" aria-expanded="false"
+                                            aria-controls="collapseInnerTwo">
+                                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                                <i class="fa fa fa-landmark text-primary text-sm opacity-10"></i>
+                                            </div>
+                                        <span>Commercial</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseInnerTwo" class="accordion-collapse collapse"
+                                     aria-labelledby="headingInnerTwo" data-bs-parent="#innerAccordion1">
+                                    <div class="accordion-body" id="divCommLayers"
+                                         style="max-height: 25vh; width: 96% !important; overflow: auto;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Second Inner Accordion Item -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header " id="headingInnerThree">
+                                    <button class="accordion-button collapsed nav-link" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapseInnerThree" aria-expanded="false"
+                                            aria-controls="collapseInnerThree">
+                                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                                <i class="fa fa-archive text-secondary text-sm opacity-10"></i>
+                                            </div>                                            
+                                        <span>Other Use</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseInnerThree" class="accordion-collapse collapse"
+                                     aria-labelledby="headingInnerThree" data-bs-parent="#innerAccordion1">
+                                    <div class="accordion-body" id="divOLLayers"
+                                         style="max-height: 25vh; overflow: auto;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- End of Inner Accordion -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="flush-headingSix">
+                    <button class="accordion-button collapsed nav-link" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseSix" aria-expanded="false"
+                            aria-controls="flush-collapseSix">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa fa-cogs text-primary text-sm opacity-10"></i>
+                            </div>                            
+                        <span>Miscellaneous</span>
+                    </button>
+                </h2>
+                <div id="flush-collapseSix" class="accordion-collapse collapse"
+                     aria-labelledby="flush-collapseSix" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" id="divMisLayers"
+                         style="max-height: 25vh; overflow: auto;">
+                    </div>
+                </div>
+            </div>
+          
+
+        </div>
+        <hr class="horizontal dark mt-0">
+        {#        <div class="row">#}
+
+        {#        </div>#}
+        <div class="map-icons">
+            <img src="{% static "img/osm.png" %}" id="osm" alt="OSM Map Icon" style="cursor:grab">
+            <img src="{% static "img/googlehybrid.png" %}" id="googleHybrid" alt="Google Hybrid Map Icon"
+                 style="cursor:grab">
+            <img src="{% static "img/googlemaps.png" %}" id="googleMap" alt="Google Map Icon" style="cursor:grab">
+{#            <img src="{% static "img/osmTopoMap.jpg" %}" id="osmTopoMap" alt="osmTopoMap Map Icon" style="cursor:grab">#}
+{#            <img src="{% static "img/osmCycleMap.jpeg" %}" id="osmCycleMap" alt="osmCycleMap Map Icon" style="cursor:grab">#}
+{#            <img src="{% static "img/osmTransportMap.png" %}" id="osmTransportMap" alt="osmTransportMap Map Icon" style="cursor:grab">#}
+{#            <img src="{% static "img/osmWatercolor.jpeg" %}" id="osmWatercolor" alt="osmWatercolor Map Icon" style="cursor:grab">#}
+            <img src="{% static "img/osmHumanitarian.png" %}" id="osmHumanitarian" alt="osmHumanitarian Map Icon" style="cursor:grab">
+        </div>
+        <div class="card card-plain shadow-none mt-3" id="sidenavCard">
+            <img class="w-50 mx-auto"
+                 src="{% static "vendor/argon-dashboard/assets/img/illustrations/icon-documentation.svg" %}"
+                 alt="sidebar_illustration">
+            <div class="card-body text-center p-3 w-100 pt-0">
+                <div class="docs-info">
+                    <h6 class="mb-0">Need help?</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+<main class="main-content position-relative border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
+         data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+                <h4 class="font-weight-bolder text-white mb-0">DECISION SUPPORT SYSTEM (MC SAHIWAL)</h4>
+            </nav>
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <ul class="navbar-nav  justify-content-end">
+                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                            <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                                <div class="sidenav-toggler-inner">
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                    <i class="sidenav-toggler-line bg-white"></i>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link text-white p-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-user cursor-pointer"></i>
+                                {% if user.is_superuser %}
+                                    <span class="d-sm-inline d-none"> Administrator</span>
+                                {% else %}
+                                    <span class="d-sm-inline d-none"> {{ user.username }}</span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item m-0">
+                                    <form action="{% url 'logout' %}?next=/accounts/login/" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="nav-link active" style="border: none; background: none;">
+                                            <div class="icon icon-shape icon-sm border-radius-md text-center">
+                                                <i class="fa fa-eye-slash text-primary text-sm opacity-10"></i>
+                                            </div>
+                                            <span class="nav-link-text ms-1" style="color: black !important;">Logout</span>
+                                        </button>
+                                    </form>
+                                </li>
+                                <li class="nav-item m-0">
+                                    <a class="nav-link" href="{% url 'password_change' %}">
+                                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                                            <i class="fa fa-pencil text-primary text-sm opacity-10"></i>
+                                        </div>
+                                        <span class="nav-link-text ms-1" style="color: black !important;">Change Password</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item px-3 d-flex align-items-center">
+                            <a href="javascript:;"
+                               class="nav-link text-white p-0">
+                                <i class="fa fa-download fixed-plugin-button-nav cursor-pointer"></i>
+                            </a>
+                        </li>
+
+                        {% if user.is_superuser %}
+
+                            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                                <a href="javascript:;" class="nav-link text-white  p-0" id="dropdownMenuButton"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-bell cursor-pointer"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-gradient-danger">
+                                        {{unread_count}}
+                                        <span class="visually-hidden">unread messages</span>
+                                      </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end bg-white border-0 rounded-0 rounded-bottom m-0"  style="top: 100% !important; 
+                                max-height: 300px; overflow-y: auto;">
+                                    {% for plot in plot_requests %}
+                                    <a href="#" class="dropdown-item" onclick="plotpdfClick({
+                                        'name': '{{ plot.name }}',
+                                        'cnic': '{{ plot.cnic }}',
+                                        'id': '{{ plot.id }}',
+                                        'contact_no': '{{ plot.contact_no }}',
+                                        'kmlArea': '{{ plot.kmlArea }}',
+                                        'address': '{{ plot.address }}',
+                                        'landuse_type': '{{ plot.landuse_type }}',
+                                        'request_status': '{{ plot.request_status }}',
+                                        'submitted_at': '{{ plot.submitted_at }}',
+                                        'Email': '{{ plot.Email }}',
+                                        'SubZone': '{{ plot.SubZone }}',
+                                        'abuttingRoad': '{{ plot.abuttingRoad }}',
+                                        'kml_path': '{{ plot.kml_path }}' 
+                                    })">
+                                        <p class="fw-normal mb-0 text-success">Request for {{ plot.landuse_type }} plot</p>
+                                        <small class="text-secondary">By {{ plot.name }} Date: {{ plot.submitted_at }}</small>
+                                    </a>
+                                    
+                                    <hr class="dropdown-divider">
+                                    {% endfor %}
+                                </div>
+                                
+                            </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </nav>
+   
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+
+       
+
+        <div class="row mb-3">
+            <div class="col-sm-12 mb-lg-0 mb-2">
+                <div class="card z-index-2 h-100 p-2">
+                    <div class="card-body" style="height: 75vh;" id="mapDiv">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row mb-3 mt-0">
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Residential</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ residential.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ residential.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-warning shadow-primary text-center rounded-circle">
+                                    <i class="fa fa-home text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Commercial</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ commercial.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ commercial.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-info shadow-danger text-center rounded-circle">
+                                    <i class="fa fa-shopping-bag text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Industry</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ industry.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ industry.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-primary shadow-primary text-center rounded-circle">
+                                    <i class="ni ni-diamond text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Public Building</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ public_building.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ public_building.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-danger shadow-primary text-center rounded-circle">
+                                    <i class="ni ni-building text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Educational</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ education.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ education.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-warning shadow-success text-center rounded-circle">
+                                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Health</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ health.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ health.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-secondary shadow-warning text-center rounded-circle">
+                                    <i class="ni ni-ambulance text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Housing Schemes</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ housing_schemes.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ housing_schemes.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-warning-vertical shadow-success text-center rounded-circle">
+                                    <i class="ni ni-map-big text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Parks</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ parks.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ parks.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-success shadow-warning text-center rounded-circle">
+                                    <i class="ni ni-user-run text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Settlements</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ settlements.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ settlements.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-danger-vertical shadow-danger text-center rounded-circle">
+                                    <i class="ni ni-pin-3 text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Religious</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ religious_building.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ religious_building.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-danger-vertical shadow-danger text-center rounded-circle">
+                                    <i class="ni ni-istanbul text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Brick Kilns</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ brick_kiln.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ brick_kiln.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape bg-gradient-faded-primary-vertical shadow-success text-center rounded-circle">
+                                    <i class="fa fa-th text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="numbers">
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Graveyards</p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Count:</span>
+                                        {{ graveyard.count }}
+                                    </p>
+                                    <p class="mb-0">
+                                        <span class="text-success text-sm font-weight-bolder">Area:</span>&nbsp;&nbsp;{{ graveyard.area }}
+                                        <span class="text-sm font-weight-bolder">(Acre)</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <div class="icon icon-shape  shadow-warning text-center rounded-circle">
+                                    <i class="fa fa-bed text-lg opacity-10" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Residential(Building Age)</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <canvas id="buildingAgeBarChartDiv" style="max-height: 45vh;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Residential(Building Height)</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <canvas id="buildingHeightBarChartDiv" style="max-height: 45vh;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Residential(Landuse Area)</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <canvas id="typeBarChartDiv" style="max-height: 45vh;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Commercial(Landuse Area)</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <canvas id="commBarChartDiv" style="max-height: 45vh !important;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Industrial(Landuse Area)</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <canvas id="indBarChartDiv" style="max-height: 45vh;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+
+<div class="modal" id="plotRequestModal" tabindex="-1" role="dialog" style="z-index: 99999999999;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Request Form</h5>
+                <div class="ml-auto">
+                    <button type="button" class="close minimize-btn" id="minimizeModal" aria-label="Minimize">
+                        <i class="fas fa-window-minimize"></i>
+                    </button>
+                    <button type="button" class="close" id="closePlotRequestModal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="dataForm" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row align-items-center">
+                                <label class="col-md-3 text-left" for="landuseType">Category <span class="mandatory">*</span></label>
+                                <label class="col-md-8 text-center">
+                                    <small class="text-muted">Fields marked with <span class="mandatory">*</span> are mandatory.</small>
+                                </label>
+                                <div class="col-md-12">
+                                    <select class="form-control" id="landuseType" name="landuseType" onchange="showUsesDropdowns()">
+                                        <option value="-1" selected>Select Landuse Type</option>
+                                        <option value="Residential Zone">Residential Zone</option>
+                                        <option value="Commercial Zone">Commercial Zone</option>
+                                        <option value="Agriculture Zone">Agriculture Zone</option>
+                                        <option value="Industrial Zone">Industrial Zone</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row" id="usesContainer" style="display: none;">
+                        <div class="col-md-12 form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="permittedUses">Permitted Uses</label>
+                                    <select class="form-control select2" id="permittedUses" onchange="updateSelectedText()">
+                                        <option value="-1">Select Permitted Uses</option>
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="permissibleUses">Permissible Uses</label>
+                                    <select class="form-control select2" id="permissibleUses" onchange="updateSelected1Text()">
+                                        <option value="">Select Permissible Uses</option>
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Text field to display selected text -->
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <label for="SubZone">Selected Uses<span class="mandatory">*</span></label>
+                                    <input type="text" class="form-control" id="SubZone" name="SubZone" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="name">Name<span class="mandatory">*</span></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                           placeholder="Mr. Public">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="contact_no">Mobile<span class="mandatory">*</span></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="contact_no"
+                                           name="contact_no" placeholder="+923001234567">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="Email">Email</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="Email" name="Email"
+                                           placeholder="ahsangillcs@gmail.com">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="cnic">CNIC<span class="mandatory">*</span></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="cnic" name="cnic"
+                                           placeholder="35201-1111111-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="kmlArea">Area<span class="mandatory">*</span></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="kmlArea" id="kmlArea" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="existingSituation">Site Situation</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control" id="existingSituation" name="existingSituation" required>
+                                        <option value="-1" selected>Select Site Situation</option>
+                                        <option value="Demolished">Demolished</option>
+                                        <option value="Under Construction">Under Construction</option>
+                                        <option value="Vacant">Vacant</option>
+                                        <option value="Constructed">Constructed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <div class="row" id="usesContainer">
+                        <div class="col-md-12 form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="abuttingRoad">Abutting Road<span class="mandatory">*</span></label>
+                                    <select class="form-control select2" id="abuttingRoad" name="abuttingRoad">
+                                        <option value="-1">Select a Road</option>
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="customRoad">Other Road Name</label>
+                                    <input type="text" id="customRoad" class="form-control" 
+                                    placeholder="Enter custom road name" style="display: none;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="revenueDocument">Attach CNIC(Front)</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg" required>
+                                    <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg">
+                                    <small id="revenueFileError" class="text-danger" style="display: none;">Please select a valid revenue document (PDF, PNG, JPG).</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="revenueDocument">Attach Revenue Document</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg" required>
+                                    <small id="revenueFileError" class="text-danger" style="display: none;">Please select a valid revenue document (PDF, PNG, JPG).</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="cnicFile">Attach CNIC (Back)</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control-file" name="cnicFile" id="cnicFile" accept=".pdf,.png,.jpg,.jpeg" required>
+                                    <small id="cnicFileError" class="text-danger" style="display: none;">Please select a valid CNIC file (PDF, PNG, JPG).</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <label for="kmlFile">Select file (KML)<span class="mandatory">*</span></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="file" class="form-control-file" name="kmlFile" id="kmlFile" accept=".kml,.kmz">
+                                    <small id="fileError" class="text-danger" style="display: none;">Please select a valid KML file.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="modal-footer justify-content-center">
+                        <button type="submit" id="submitPlotRequest" name="submitPlotRequest"
+                                class="btn btn-success btn-submit">Submit Request
+                        </button>
+                        <div class="col-sm-12" id="response-message"></div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="featureDetailModal" tabindex="-1" aria-labelledby="featureModalLabel"
+     aria-hidden="true" style="z-index: 99999999999;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feature Information</h5>
+            </div>
+            <div class="modal-body" id="featureModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="requestListModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true" style="z-index: 99999999999;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Request List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="jqxGrid">
+                <!-- Your table or content goes here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="featureInfoModal" tabindex="-1" style="z-index: 99999999999;"
+     aria-labelledby="featureInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="featureInfoModalLabel">Feature Info</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Tab navigation -->
+                <ul class="nav nav-tabs" id="featureInfoTabs" role="tablist"></ul>
+                <!-- Tab content -->
+                <div class="tab-content" id="featureInfoContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="landUseModal" tabindex="-1" role="dialog" aria-labelledby="landUseModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="landUseModalLabel">Update Land Use Type</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Label for Layer Name -->
+                <div class="mb-3">
+                    <label for="layerName" class="form-label">Layer Name</label>
+                    <input type="text" class="form-control" id="layerName" readonly>
+                </div>
+                <!-- Label for Object ID -->
+                <div class="mb-3">
+                    <label for="objectId" class="form-label">Object ID</label>
+                    <input type="text" class="form-control" id="objectId" readonly>
+                </div>
+                <!-- Dropdown for Land Use Type -->
+                <div class="mb-3">
+                    <label for="landuseTypeedit" class="form-label">Land Use Type</label>
+                    <select class="form-control" id="landuseTypeedit" name="landuseTypeedit" onchange="showSubzonesDropdowns()">
+                        <option value="-1" selected>Select Land Use Type</option>
+                        <option value="Residential">Residential</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Industrial">Industrial</option>
+                    </select>
+                </div>
+                  <!-- Dynamic Subzone Dropdown -->
+                  <div class="mb-3" id="subzoneContainer" style="display: none;">
+                    <label for="subzone" class="form-label">Subzone</label>
+                    <select class="form-control" id="subzone" name="subzone">
+                        <!-- Options will be dynamically added here -->
+                    </select>
+                </div>
+                <!-- Dropdown for Parcel Action -->
+                <div class="mb-3">
+                    <label for="parcelAction" class="form-label">Parcel Action</label>
+                    <select class="form-control" id="parcelAction" name="parcelAction">
+                        <option value="selected">Selected Parcel</option>
+                        <option value="complete">Complete Parcel</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="updateLandUseButton">Update Land Use</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="fixed-plugin">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2" aria-label="Settings Menu">
+        <i class="fa fa-cog py-2"></i>
+    </a>
+    <div class="card shadow-lg">
+        <div class="card-header pb-0 pt-3">
+            <!-- <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-link text-dark p-0 fixed-plugin-close-button" aria-label="Close Menu">
+                    <i class="fa fa-close"></i>
+                </button>
+            </div> -->
+        </div>
+        <!-- <hr class="horizontal dark my-1"> -->
+
+        <div class="card-body pt-sm-3 pt-0 overflow-auto">
+            <h6 class="my-3">Download Building Bye-Laws</h6>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/media/by-laws/RESIDENTIAL SITE REQUIREMENTS AS PER BUILDING BYE LAWS 2020 FOR MC SAHIWAL.pdf" target="_blank" aria-label="Residential Bye-Laws">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                            <i class="fa fa-home text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Residential</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/media/by-laws/COMMERCIAL SITE REQUIREMENTS AS PER BUILDING BYE LAWS 2020 FOR MC SAHIWAL.pdf" target="_blank" aria-label="Commercial Bye-Laws">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                            <i class="fa fa-shopping-cart text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Commercial</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/media/by-laws/AGRICULTURE SITE REQUIREMENTS AS PER BUILDING BYE LAWS 2020 FOR MC SAHIWAL.pdf" target="_blank" aria-label="Agriculture Bye-Laws">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                            <i class="fas fa-tractor text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Agriculture</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/media/by-laws/INDUSTRIAL SITE REQUIREMENTS AS PER BUILDING BYE LAWS 2020 FOR MC SAHIWAL.pdf" target="_blank" aria-label="Industrial Bye-Laws">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                            <i class="fa fa-industry text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Industrial</span>
+                    </a>
+                </li>
+            </ul>
+
+            <hr class="horizontal dark mt-3">
+
+            <h6 class="my-3">Additional Resources</h6>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/media/MAP/scanned_map_sahiwal.pdf" target="_blank" aria-label="Notified SDZ MC Sahiwal Map">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                            <i class="fa fa-download text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Notified SDZ MC Sahiwal 2023-2043</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/media/KMLFile/kml_sample.kml" target="_blank" aria-label="KML Sample File">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center">
+                            <i class="fa fa-download text-primary text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">KML Sample File</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!--   Core JS Files   -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Add jQuery UI for draggable functionality -->
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+<!-- Include Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/core/popper.min.js" %}"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/core/bootstrap.min.js" %}"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/plugins/perfect-scrollbar.min.js" %}"></script>
+<script src="{% static "vendor/argon-dashboard/assets/js/plugins/smooth-scrollbar.min.js" %}"></script>
+{#<script src="{% static "vendor/argon-dashboard/assets/js/plugins/chartjs.min.js" %}"></script>#}
+<script src="{% static "vendor/darkpan/lib/chart/chart.min.js" %}"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="{% static "vendor/leaflet-image-gh-pages/leaflet-image.js" %}"></script>
+<script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<script src="https://jqwidgets.com/public/jqwidgets/jqx-all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+<script src="{% static "vendor/tokml.js" %}"></script>
+<script src="{% static "js/DashboardMap.js" %}"></script>
+<script src="{% static "js/ChartsVM.js" %}"></script>
+
+<script>
+
+    let areaCanals = 0.0, areaSqFeet = 0.0, areaMarla = 0.0, areaAcres = 0.0;
+    let drawnPolygon = null;
+    let is_superuser = '{{ user.is_superuser }}';
+    let plotRequestURL = '{% url "get_user_plot_requests" %}';
+    let areaSum = JSON.parse('{{ area_sum|safe }}');
+    let lu_area_sum = JSON.parse('{{ lu_area_sum|safe }}');
+    console.log(areaSum);
+    $(document).ready(function (e) {
+        $('.select2').select2({
+            allowClear: true // Allows the user to clear the selection
+        });
+        $("#requestListModal .modal-dialog").draggable({
+            handle: ".modal-header" // Make the header the handle for dragging
+        });
+         // List of road names
+    const roadNames = [
+        "2021 Canal Road 82/6-R",
+        "2021 Gulf City Road",
+        "2021 Main Canal Road 135 9-L",
+        "2021 Main Farid town Road",
+        "47/52. Sahiwal to Multan-Lahore GT Road",
+        "Arifwala Road to Inayat Elahi Colony",
+        "Arshad Bhutta Petrol Pump, Kacha Noor Shah Road at Noor Shah",
+        "Bhandari to Liaqat Chowk",
+        "Bohar Wala Chowk to Insar Road at Girls College Road",
+        "By Pass Road",
+        "Chowk AFC to Ibal Road",
+        "Chowk Arifwala to Arifwala Road",
+        "Chowk Mal Mandi to Faisalabad Road",
+        "Circular Road to Police Line Gate",
+        "Civil Line",
+        "Comprehensive School Chowk to Graveyard Madhali Road Qutub Shahana Road",
+        "Dhobi Ghat to Ghouri Chowk to Dr Ismail Khan Chowk",
+        "Fareed town to Central Jail Gate Ahmad Murad Road",
+        "Faridia Park to Puli, Labor Colony",
+        "Fateh Sher Road to Garwi Wala Pull",
+        "Furniture Bazar to Noor Shah Road",
+        "High Street Tehsil Road to Court East Gate",
+        "Imamia College Chowk to TTC College at Harrapa City 9. Main 95/6-R",
+        "Jogi Chowk to Pakpatan Chowk",
+        "Main Market Roads",
+        "Mission Hospital Road to Kacha Noor Shah Road",
+        "Mohallah Eid Gah",
+        "Mohallah Farid Ganj",
+        "Mohammadia Masjiid Chowk Dare Wala Khokha at Jahaz Chowk DPS Road",
+        "Near Gol Chakar Chowk",
+        "Near Liaqat Chowk",
+        "Near Over Head Bridge at Mazdoor Pulli",
+        "Near Tufail Shaheed Flyover",
+        "Near Zahoori Park",
+        "Noor Shah Road to Junejo Colony at Qutub Shahna Road",
+        "Old Civil Line",
+        "Pakpatan Chowk to Pakpatan Road",
+        "Pasha Street",
+        "Pul Bazar",
+        "Pul Manzoor Colony to By Pass Road",
+        "Puli Kot Near Wali Sound to Gaam Wala Pul to Kacha Noor Shah Road",
+        "Saudi Pak Bank to Scheme No .3 to Chak 92/6-R 8. 2021 Main Road 92/6-R Road",
+        "Stadium Chowk to Iqbal Road",
+        "Tanki Chowk High Street to 5 Ways Chowk",
+        "Tehsil Chowk to Halli Road",
+        "View Hotel to Imamia College Road",
+        "Yaadgar Ahmad Murad Road to Muhammad Pur Road",
+        "Other"
+    ];
+
+    // Populate the dropdown with road names
+    roadNames.forEach(function(road) {
+        $('#abuttingRoad').append(new Option(road, road));
+    });
+
+    // Handle selection change
+    $('#abuttingRoad').on('change', function() {
+        const selectedValue = $(this).val();
+        if (selectedValue === "") {
+            $('#customRoad').hide();
+        } else if (selectedValue === "Other") { // Add a specific option for 'Other' if needed
+            $('#customRoad').show();
+        } else {
+            $('#customRoad').hide();
+        }
+    });
+    $("#plotRequestModal").modal({
+    backdrop: 'static', // Prevent closing when clicking outside
+    keyboard: false // Prevent closing with the keyboard (Esc key)
+});
+$("#requestListModal").modal({
+    backdrop: 'static', // Prevent closing when clicking outside
+    keyboard: false // Prevent closing with the keyboard (Esc key)
+});
+        $("#aPlotRequestModal").on("click", function (e) {
+            e.preventDefault();
+            $("#plotRequestModal").modal("show");
+        });
+        $("#aRequestListModal").on("click", function (e) {
+            e.preventDefault();
+            $("#requestListModal").modal("show");
+        });
+        $("#plotRequestModal .modal-content").draggable({
+        handle: ".modal-header"
+       });
+        // Minimize button functionality
+    $('#minimizeModal').click(function () {
+        $('.modal-body').toggle(); // Show/hide the modal body
+    });
+
+    // Close modal functionality
+    $('#closePlotRequestModal').on('click', function () {
+        $('#plotRequestModal').modal('hide'); // Bootstrap modal hide method
+    });
+    document.getElementById('kmlFile').addEventListener('change', function () {
+        var fileInput = this;
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.kml)$/i;
+        var errorMessage = document.getElementById('fileError');
+
+        if (!allowedExtensions.exec(filePath)) {
+            errorMessage.style.display = 'block'; // Show error message
+            fileInput.value = ''; // Clear the input
+        } else {
+            errorMessage.style.display = 'none'; // Hide error message if valid
+        }
+    });
+        let dMap = new DashboardMap();
+        dMap.initMap();
+        dMap.initDataGrid();
+
+        let chartVM = new ChartsVM();
+
+        let bAgeChartData = chartVM.getBarChartData(lu_area_sum["building_age_count"], "Age Count", "rgb(255,141,70)", "building_a", "count");
+        chartVM.initBarChart(bAgeChartData, "buildingAgeBarChartDiv");
+
+        let bHeightChartData = chartVM.getBarChartData(lu_area_sum["building_height_count"], "Height Count", "rgba(255,141,70,0.75)", "b_height", "count");
+        chartVM.initBarChart(bHeightChartData, "buildingHeightBarChartDiv");
+
+        let chartData = chartVM.getBarChartData(lu_area_sum["residential_area"], "Area", "rgba(235, 22, 22, 1)", "lu_upd", "area");
+        chartVM.initBarChart(chartData, "typeBarChartDiv");
+
+        {#let pieChartData = chartVM.getPieChartData(lu_area_sum["residential_area"]);#}
+        {#chartVM.initPieChart(pieChartData, "typePieChartDiv");#}
+
+        let chartDataComm = chartVM.getBarChartData(lu_area_sum["commercial_area"], "Area", "rgb(22,235,210)", "lu_upd", "area");
+        chartVM.initBarChart(chartDataComm, "commBarChartDiv");
+
+        {#let pieChartCommData = chartVM.getPieChartData(lu_area_sum["commercial_area"]);#}
+        {#chartVM.initPieChart(pieChartCommData, "commPieChartDiv");#}
+
+        let chartDataInd = chartVM.getBarChartData(lu_area_sum["industry_area"], "Area", "rgb(173,35,243)", "lu_upd", "area");
+        chartVM.initBarChart(chartDataInd, "indBarChartDiv");
+
+        {#let pieChartIndData = chartVM.getPieChartData(lu_area_sum["industry_area"]);#}
+        {#chartVM.initPieChart(pieChartIndData, "indPieChartDiv");#}
+
+
+    });
+
+</script>
+<script>
+function showSubzonesDropdowns() {
+    const landuseType = document.getElementById("landuseTypeedit").value;
+    const subzoneContainer = document.getElementById("subzoneContainer");
+    const subzoneSelect = document.getElementById("subzone");
+    
+    // Clear existing options
+    subzoneSelect.innerHTML = "";
+    
+    // Add subzone options based on selected land use type
+    if (landuseType === "Residential") {
+        subzoneContainer.style.display = "block";
+        
+        // Define subzones with text and value pairs for Residential
+        const residentialSubzones = [
+            { text: "Residential Zone", value: "residential_zones" },
+            { text: "Health Neighbourhood", value: "health_neighbourhood" },
+            { text: "Educational Neighbourhood", value: "educational_neighbourhood" }
+        ];
+        
+        // Populate the dropdown with the defined Residential subzones
+        residentialSubzones.forEach(subzone => {
+            const option = document.createElement("option");
+            option.value = subzone.value;
+            option.textContent = subzone.text;
+            subzoneSelect.appendChild(option);
+        });
+        
+    } else if (landuseType === "Commercial") {
+        subzoneContainer.style.display = "block";
+        
+        // Define subzones with text and value pairs for Commercial
+        const commercialSubzones = [
+            { text: "Special Economic Zone", value: "special_economic_zone" },
+            { text: "Intercity Corridor", value: "intercity_corridor" },
+            { text: "Institutional Zone", value: "institutional_zone" },
+            { text: "Veterinary Hospital", value: "veterinary_hospital" },
+            { text: "Central Business District", value: "central_business_district" }
+        ];
+        
+        // Populate the dropdown with the defined Commercial subzones
+        commercialSubzones.forEach(subzone => {
+            const option = document.createElement("option");
+            option.value = subzone.value;
+            option.textContent = subzone.text;
+            subzoneSelect.appendChild(option);
+        });
+        
+    } else if (landuseType === "Agriculture") {
+        subzoneContainer.style.display = "block";
+        
+        // Define subzones with text and value pairs for Agriculture
+        const agricultureSubzones = [
+            { text: "Agro Industry Zone", value: "agro_industry_zone" },
+            { text: "Farm Housing Zone", value: "farm_housing_zone" },
+            { text: "Cattle Market Zone", value: "cattle_market" },
+            { text: "Fruit & Vegetable Market Zone", value: "fruit_vegetable_market" },
+            { text: "Recreational Zone", value: "recreational_zone" },
+            { text: "Agriculture Zone", value: "agriculture_zone" }
+        ];
+        
+        // Populate the dropdown with the defined Agriculture subzones
+        agricultureSubzones.forEach(subzone => {
+            const option = document.createElement("option");
+            option.value = subzone.value;
+            option.textContent = subzone.text;
+            subzoneSelect.appendChild(option);
+        });
+        
+    } else {
+        // Hide the subzone dropdown if land use type is not Residential, Commercial, or Agriculture
+        subzoneContainer.style.display = "none";
+    }
+}
+
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.1'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  
+    function showUsesDropdowns() {
+    const landuseType = document.getElementById("landuseType").value;
+    const usesContainer = document.getElementById("usesContainer");
+    const permittedUsesDropdown = document.getElementById("permittedUses");
+    const permissibleUsesDropdown = document.getElementById("permissibleUses");
+
+    // Clear previous options
+    permittedUsesDropdown.innerHTML = '<option value="">Select Permitted Uses</option>';
+    permissibleUsesDropdown.innerHTML = '<option value="">Select Permissible Uses</option>';
+
+    if (landuseType === "Residential Zone") {
+        // Show the uses container
+        usesContainer.style.display = "block";
+
+        // Add options for Permitted Uses
+        const permittedUses = [
+            "Detached house",
+            "Semi-detached house",
+            "Town house",
+            "Residential apartment",
+            "Neighborhood level park and playground",
+            "Place of worship or prayer",
+            "Place of burial or cremation",
+            "Horticultural nursery",
+            "Beauty parlor",
+            "Urban forest",
+            "Non-commercial renewable energy installation"
+        ];
+        permittedUses.forEach(use => {
+            permittedUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+
+        // Add options for Permissible Uses
+        const permissibleUses = [
+            "Daycare centre or preschool",
+            "Primary school",
+            "Secondary school",
+            "Dispensary with no bed and laboratory facilities",
+            "Library",
+            "Post office, fire station, rescue and emergency services",
+            "Rehabilitation centre for disabled",
+            "Hotel",
+            "Indoor sports centre",
+            "Private community club",
+            "Guest house having not more than ten rooms",
+            "Small size corner shop at the ground floor",
+            "Polyclinic",
+            "Parking plaza",
+            "Diplomatic enclave or diplomatic office",
+            "Electric vehicle charging centre",
+            "Small size corner shop or neighborhood shop up to max 144 sqft on the ground floor",
+            "Office of a professional not exceeding 25% of the floor area, as office associated with resident professional"
+        ];
+        permissibleUses.forEach(use => {
+            permissibleUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+    } else if (landuseType === "Commercial Zone") {
+        // Show the uses container
+        usesContainer.style.display = "block";
+
+        // Add options for Permitted Uses
+        const permittedUses = [
+            "Residential apartment",
+            "Multi storey building",
+            "Condominium complex",
+            "Commercial plaza",
+            "Market, shopping mall, departmental store",
+            "Business facility",
+            "Private office",
+            "Government or semi-government office",
+            "Court or tribunal",
+            "Financial institution",
+            "Cultural institution such as park, memorial and monument",
+            "Hotel (less than four star)",
+            "Motel",
+            "Showroom",
+            "Shop except dealing with hazardous material",
+            "Bakery or confectionary",
+            "Beauty Parlour",
+            "Hostel",
+            "Courier Service",
+            "Private telephone exchange",
+            "Boutique",
+            "Restaurant",
+            "Social welfare institution such as community centre, art gallery & museum",
+            "Parking plaza",
+            "Taxi, rikshaw stand and bus halt",
+            "Police station, post office, fire station",
+            "Place of worship or prayer"
+        ];
+        permittedUses.forEach(use => {
+            permittedUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+
+        // Add options for Permissible Uses
+        const permissibleUses = [
+            "Educational institution",
+            "Research institution",
+            "Marriage or banquet hall with a minimum plot size of 04 kanals",
+            "Cinema",
+            "Theater, auditorium, concert hall or exhibition hall with a minimum plot size of 04 kanals",
+            "Seasonal commercial fare site",
+            "Stadium or play land",
+            "Shops dealing in dangerous material",
+            "Petrol pump or gas station",
+            "Bus or truck terminal",
+            "Loading and unloading requirements of all uses",
+            "Weighbridge",
+            "Private hospital",
+            "Hotel four star or above",
+            "Television or other studio",
+            "Auto workshop",
+            "Whole sale storage place",
+            "Printing press",
+            "Athletic club, gymnasium, fitness centre or indoor sport facility",
+            "Base trans receiver station or communication tower",
+            "Renewable energy installation"
+        ];
+        permissibleUses.forEach(use => {
+            permissibleUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+    } else if (landuseType === "Industrial Zone") {
+        // Show the uses container
+        usesContainer.style.display = "block";
+
+        // Add options for Permitted Uses
+        const permittedUses = [
+            "Cottage or light industry",
+            "Vertical green industry",
+            "Construction equipment",
+            "Warehouse, storage or distribution centre",
+            "Building material store",
+            "Fire station",
+            "Restaurant",
+            "Loading and unloading place",
+            "Weighbridge",
+            "Industrial units except for which special permission is required",
+            "Industrial product display centre",
+            "Renewable energy installation",
+            "Ancillary office or place for industry",
+            "Auto workshop, service garage and service station",
+            "Essential residential, commercial and educational facilities for labour/employees",
+            "Police station, post office, fire station",
+            "Parking lot",
+            "Base trans receiver station or communication tower",
+            "Water purification plan",
+            "Forest or green area",
+            "Vocational or training centre",
+            "Medium or heavy industry"
+        ];
+        permittedUses.forEach(use => {
+            permittedUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+
+        // Add options for Permissible Uses
+        const permissibleUses = [
+            "Storing, packing, pursing, cleaning, preparing, and manufacturing of blasting powder, ammunition, fireworks, gun powder, sulphur, mercury, gases, nitrocompounds, phosphorous, dynamite",
+            "Storing explosives, petrol, oil, lubricants, and other inflammable materials including coal, chemicals, liquids or otherwise cleaning, dying, preparing and manufacturing of cloth or yarn in indigo or other colour",
+            "Storing, processing, cleaning, crushing, melting, preparing or manufacturing and dealing in bombs, tallow, offal, fat blood, soap, raw or dry hide or skin, washing or dying wool or hair",
+            "Casting of heavy metals, electro plating, welding, marble cutting and polishing, manufacturing of cement or pipes, burning or grinding of lime stone, metal or use of any other obnoxious or hazardous material",
+            "Petrol pump or gas station or LPG or LNG storage or filling station",
+            "Grid station",
+            "Power plant",
+            "Hospital",
+            "Effluent treatment or recycling plant",
+            "Industrial units for which special permission is required",
+            "Oil depot",
+            "Incineration plant",
+            "Essential residential, commercial and educational facilities for labour/employees",
+            "Place for worship"
+        ];
+        permissibleUses.forEach(use => {
+            permissibleUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+    } else if (landuseType === "Agriculture Zone") {
+        // Show the uses container
+        usesContainer.style.display = "block";
+
+        // Add options for Permitted Uses
+        const permittedUses = [
+            "Crop",
+            "Orchard",
+            "Pasture land",
+            "Livestock such as dairy or poultry farm",
+            "Forest",
+            "Nursery or a green-house",
+            "Tube well",
+            "Rural settlement or village",
+            "Place of worship or prayer",
+            "Place of burial or cremation",
+            "Corner shop",
+            "Agro-based industry",
+            "Cottage industry",
+            "Vegetable, fruit and grain market",
+            "Cattle market of a local government",
+            "Public slaughter house",
+            "Gawala colony",
+            "Bus or truck terminal and ancillary activities"
+        ];
+        permittedUses.forEach(use => {
+            permittedUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+
+        // Add options for Permissible Uses
+        const permissibleUses = [
+            "Agricultural machinery workshop",
+            "Brick kiln",
+            "Basic health unit",
+            "Veterinary dispensary or hospital",
+            "Recreational club or resort",
+            "Shooting range",
+            "Swimming pool",
+            "Library",
+            "Cold storage",
+            "Animal or livestock research institute",
+            "Park, monument, playground, gymnasium or sports complex",
+            "Vegetable, fruit and grain market",
+            "Cattle market of local government",
+            "Public toilet",
+            "Oil depot",
+            "Animal husbandry clinic",
+            "Country club",
+            "Farm house",
+            "Public or private or recreational park",
+            "Water filtration plant",
+            "Waste water treatment plant",
+            "Landfill site",
+            "Incineration plant",
+            "Birds/wildlife sanctuary",
+            "Botanical or zoological garden",
+            "Factory outlet",
+            "Zoo",
+            "Base trans-receiver station or communication tower",
+            "Petrol pump or gas station or LPG or LNG storage or filling station"
+        ];
+        permissibleUses.forEach(use => {
+            permissibleUsesDropdown.innerHTML += `<option value="${use}">${use}</option>`;
+        });
+    } else {
+        // Hide the uses container if no valid land use type is selected
+        usesContainer.style.display = "none";
+    }
+}
+
+//updateSelectedText
+// Function to update selected text and reset the other dropdown
+function updateSelectedText() {
+    // Get the values of both dropdowns
+    var permittedValue = document.getElementById('permittedUses').value;
+   
+    // Initialize a variable to hold the selected text
+    var selectedText = 'permitted - ';
+    if (permittedValue && permittedValue !== "-1") {
+        selectedText += permittedValue; // If permitted dropdown has a value
+    } 
+    
+    document.getElementById('SubZone').value = selectedText;
+
+    // Reset the permissible dropdown
+    document.getElementById('permissibleUses').selectedIndex = 0; // Reset to the first option
+}
+
+function updateSelected1Text() {
+    var permissibleValue = document.getElementById('permissibleUses').value;
+    var selectedText = 'permissible - ';
+    if (permissibleValue) {
+        selectedText += permissibleValue; // If permissible dropdown has a value
+    }
+
+    // Update the text field
+    document.getElementById('SubZone').value = selectedText;
+
+    // Reset the permitted dropdown
+    document.getElementById('permittedUses').selectedIndex = 0; // Reset to the first option
+}
+</script>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="{% static "vendor/argon-dashboard/assets/js/argon-dashboard.min.js" %}?v=2.0.4"></script>
+{#    <script src="https://appsrv1-147a1.kxcdn.com/argon-dashboard/js/argon.js?v=1.2.0"></script>#}
+
+
+</body>
+
+</html>
