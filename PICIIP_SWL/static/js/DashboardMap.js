@@ -267,11 +267,13 @@ document.getElementById('toggleproposalALLLayers').addEventListener('change', fu
 
 
         // Admin boundaries layers and their group
-        me.stateLandLayer = me.getGeoserverLayer('ss:state_land', false);
         me.cantonementLayer = me.getGeoserverLayer('ss:contonement', false);
+        me.stateLandLayer = me.getGeoserverLayer('ss:state_land', false);
+       
 
-        me.notifiedAreaGroup[me.layerNameWithLegend("State Land", "ss:state_land")] = me.stateLandLayer;
         me.notifiedAreaGroup[me.layerNameWithLegend("Cantonment", "ss:contonement")] = me.cantonementLayer;
+        me.notifiedAreaGroup[me.layerNameWithLegend("State Land", "ss:state_land")] = me.stateLandLayer;
+        
 
         me.notifiedAreaGroup = me.getLayerGroup(me.notifiedAreaGroup);
         me.notifiedAreaGroupContainer = me.notifiedAreaGroup.getContainer();
@@ -286,7 +288,7 @@ document.getElementById('toggleproposalALLLayers').addEventListener('change', fu
         me.existingRingRoadLayer = me.getGeoserverLayer('ss:ring_road', false);
         me.residentialLayer = me.getGeoserverLayer('ss:residential', false);
         me.existingSettlementsLayer = me.getGeoserverLayer('ss:settlements', false);
-        // me.establishedBuiltupLayer = me.getGeoserverLayer('ss:state_land', false);
+        me.establishedBuiltupLayer = me.getGeoserverLayer('ss:state_land', false);
         me.commercialLayer = me.getGeoserverLayer('ss:commercial', false);
         me.educationalLayer = me.getGeoserverLayer('ss:education', false);
         me.graveyardLayer = me.getGeoserverLayer('ss:graveyard', false);
@@ -308,12 +310,12 @@ document.getElementById('toggleproposalALLLayers').addEventListener('change', fu
         me.existingLanduseGroup[me.layerNameWithLegend("Primary Roads", "ss:primary_roads")] = me.primaryRoadsLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Secondary Roads", "ss:secondary_roads")] = me.secondaryRoadsLayer;
 
-        me.stateLandLayer = me.getGeoserverLayer('ss:state_land', false);
         me.cantonementLayer = me.getGeoserverLayer('ss:cantonement', false);
+        me.stateLandLayer = me.getGeoserverLayer('ss:state_land', false);
         me.railwayLineLayer = me.getGeoserverLayer('ss:railway_line', false);
         me.expressHighwayLayer = me.getGeoserverLayer('ss:expressway_highway', false);
-        me.addLayer(me.stateLandLayer);
         me.addLayer(me.cantonementLayer);
+        me.addLayer(me.stateLandLayer);
         me.addLayer(me.railwayLineLayer);
         me.addLayer(me.expressHighwayLayer);
 
@@ -321,17 +323,18 @@ document.getElementById('toggleproposalALLLayers').addEventListener('change', fu
 
         me.existingLanduseGroup[me.layerNameWithLegend("Tertiary Roads", "ss:tertiary_roads")] = me.tertiaryRoadsLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Existing Ring Road", "ss:ring_road")] = me.existingRingRoadLayer;
-        me.existingLanduseGroup[me.layerNameWithLegend("Approved Housing Schemes", "ss:approved_housing_schemes")] = me.approvedHSLayer;
-        me.existingLanduseGroup[me.layerNameWithLegend("Settlements", "ss:settlements")] = me.existingSettlementsLayer;
+        me.existingLanduseGroup[me.layerNameWithLegend("Approved Housing Scheme", "ss:approved_housing_schemes")] = me.approvedHSLayer;
+        me.existingLanduseGroup[me.layerNameWithLegend("Existing Settlement", "ss:settlements")] = me.existingSettlementsLayer;
+       //me.existingLanduseGroup[me.layerNameWithLegend("1234", "ss:agriculture")] = me.residentialLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Residential", "ss:residential")] = me.residentialLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Commercial", "ss:commercial")] = me.commercialLayer;
-        me.existingLanduseGroup[me.layerNameWithLegend("Educational", "ss:education")] = me.educationalLayer;
+        me.existingLanduseGroup[me.layerNameWithLegend("Educational Institution", "ss:education")] = me.educationalLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Graveyard", "ss:graveyard")] = me.graveyardLayer;
-        me.existingLanduseGroup[me.layerNameWithLegend("Health", "ss:health")] = me.healthLayer;
+        me.existingLanduseGroup[me.layerNameWithLegend("Health Institution", "ss:health")] = me.healthLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Industry", "ss:industry")] = me.industryLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Brick Kiln", "ss:brick_kiln")] = me.brickilnLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Parks", "ss:parks")] = me.parksLayer;
-        me.existingLanduseGroup[me.layerNameWithLegend("Public Building", "ss:public_building")] = me.publicBuildingLayer;
+        me.existingLanduseGroup[me.layerNameWithLegend("Public Building & Govt. Offices", "ss:public_building")] = me.publicBuildingLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Religious Building", "ss:religious_building")] = me.religiousLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Water Bodies", "ss:water_bodies")] = me.waterBodiesLayer;
         me.existingLanduseGroup[me.layerNameWithLegend("Area Under Development", "ss:area_under_development")] = me.areaUnderDevelopmentLayer;
