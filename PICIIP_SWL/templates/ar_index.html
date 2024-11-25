@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{% static "img/piciip.png" %}">
     <link rel="icon" type="image/png" href="{% static "img/piciip.png" %}">
     <title>
-        SDSS Sahiwal
+        DSS Sahiwal
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
@@ -18,13 +18,15 @@
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="{% static "vendor/argon-dashboard/assets/css/nucleo-svg.css" %}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <!-- CSS Files -->
     <link id="pagestyle" href="{% static "vendor/argon-dashboard/assets/css/argon-dashboard.css" %}?v=2.0.4"
           rel="stylesheet"/>
     <link rel="stylesheet" href="{% static "vendor/leaflet/leaflet.css" %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
     <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
-    <link rel="stylesheet" href="https://jqwidgets.com/public/jqwidgets/styles/jqx.base.css"/>
+    <!-- <link rel="stylesheet" href="https://jqwidgets.com/public/jqwidgets/styles/jqx.base.css"/> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
        
@@ -263,7 +265,7 @@ input:checked + .slider:before {
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link " href="{% url "home" %}">
+                <a class="nav-link active" href="{% url "home" %}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-book-bookmark text-primary text-sm opacity-10"></i>
                     </div>
@@ -271,7 +273,7 @@ input:checked + .slider:before {
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{% url "home" %}">
+                <a class="nav-link active" href="{% url "home" %}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                     </div>
@@ -558,6 +560,8 @@ input:checked + .slider:before {
                                 {% else %}
                                     <span class="d-sm-inline d-none"> {{ user.username }}</span>
                                 {% endif %}
+                                <!-- Add the dropdown arrow here -->
+                                <i class="fa fa-chevron-down ms-2"></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item m-0">
@@ -581,6 +585,7 @@ input:checked + .slider:before {
                                 </li>
                             </ul>
                         </li>
+                        
                         <li class="nav-item px-3 d-flex align-items-center">
                             <a href="javascript:;"
                                class="nav-link text-white p-0">
@@ -961,8 +966,8 @@ input:checked + .slider:before {
                                 </div>
                             </div>
                             <div class="col-4 text-end">
-                                <div class="icon icon-shape  shadow-warning text-center rounded-circle">
-                                    <i class="fa fa-bed text-lg opacity-10" aria-hidden="true"></i>
+                                <div class="icon icon-shape bg-gradient-faded-warning shadow-success text-center rounded-circle" data-toggle="tooltip" title="Graveyard">
+                                    <i class="fa fa-skull text-lg opacity-10" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -1199,11 +1204,10 @@ input:checked + .slider:before {
                         <div class="col-md-6">
                             <div class="row align-items-center">
                                 <div class="col-md-3">
-                                    <label for="revenueDocument">Attach CNIC(Front)</label>
+                                    <label for="revenueDocument">Attach CNIC(Front)<span style="color: red;">*</span></label>
                                 </div>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg" required>
-                                    <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg">
                                     <small id="revenueFileError" class="text-danger" style="display: none;">Please select a valid revenue document (PDF, PNG, JPG).</small>
                                 </div>
                             </div>
@@ -1212,7 +1216,7 @@ input:checked + .slider:before {
                         <div class="col-md-6">
                             <div class="row align-items-center">
                                 <div class="col-md-3">
-                                    <label for="revenueDocument">Attach Revenue Document</label>
+                                    <label for="revenueDocument">Attach Revenue Document<span style="color: red;">*</span></label>
                                 </div>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg" required>
@@ -1226,7 +1230,7 @@ input:checked + .slider:before {
                         <div class="col-md-6">
                             <div class="row align-items-center">
                                 <div class="col-md-3">
-                                    <label for="cnicFile">Attach CNIC (Back)</label>
+                                    <label for="cnicFile">Attach CNIC(Back)<span style="color: red;">*</span></label>
                                 </div>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control-file" name="cnicFile" id="cnicFile" accept=".pdf,.png,.jpg,.jpeg" required>
