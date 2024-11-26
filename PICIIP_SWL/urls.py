@@ -20,6 +20,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views 
 from PICIIP_SWL import settings, views
 from PICIIP_SWL.views import *
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,6 +36,7 @@ urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('password/change/', change_password, name='password_change'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/accounts/login/?next=/'), name='logout'),
+    path('introduction/', views.introduction_view, name='introduction'),
 ]
 
 if settings.DEBUG:

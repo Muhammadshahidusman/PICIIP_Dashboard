@@ -251,3 +251,9 @@ def reject_plot(request):
         except PlotRequests.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Plot request not found'}, status=404)
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+
+from django.shortcuts import render
+
+def introduction_view(request):
+    return render(request, 'introduction.html')

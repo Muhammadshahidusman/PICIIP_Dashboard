@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction | DSS Sahiwal</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f6fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #026937;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            height: 80px;
+            margin: 10px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #026937;
+            margin: 10px 0;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            color: #026937;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            line-height: 1.8;
+            font-size: 1em;
+            color: #444;
+        }
+
+        .team {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .team-member {
+            flex: 1 1 250px;
+            margin: 10px;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            background: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member h3 {
+            font-size: 1.2em;
+            color: #026937;
+            margin: 10px 0;
+        }
+
+        .team-member p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            background: #026937;
+            color: #fff;
+            font-size: 0.9em;
+            border-radius: 0 0 8px 8px;
+        }
+
+        footer a {
+            color: #dfffe0;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/gopunjab-transparent-logo.png' %}" alt="Govt of Punjab Logo">
+            <img src="{% static 'img/piciip.png' %}" alt="PICIIP Logo">
+            <h1>Decision Support System (DSS) Dashboard</h1>
+            <p>Your Gateway to Sustainable Urban Development in Sahiwal</p>
+        </div>
+
+        <div class="section">
+            <h2>About the Dashboard</h2>
+            <p>The Decision Support System (DSS) Dashboard is an innovative platform developed to streamline urban planning and decision-making in Sahiwal. It provides real-time data visualization and actionable insights, helping stakeholders effectively manage administrative boundaries, land use, proposed zones, and urban development proposals.</p>
+            <p>This user-friendly interface fosters collaboration among urban planners, government officials, and the public to create a sustainable, inclusive, and resilient city.</p>
+        </div>
+
+        <div class="section">
+            <h2>About PICIIP</h2>
+            <p>The Punjab Intermediate Cities Improvement Investment Program (PICIIP) is committed to transforming intermediate cities into modern urban centers. By improving municipal infrastructure, services, and governance, PICIIP ensures a better quality of life for residents. Our focus is on sustainable development, climate resilience, and smart urban growth.</p>
+        </div>
+
+        <div class="section">
+            <h2>Meet Our Team</h2>
+            <div class="team">
+                <div class="team-member">
+                    <h3>Khurram Farid Bargatt </h3>
+                    <p>Managing Director(Sheher Saaz Private Limited)</p>
+                </div>
+                <div class="team-member">
+                    <h3>Dr. Abdul Rehman</h3>
+                    <p>Director (Urban Planning)</p>
+                </div>
+                
+                <div class="team-member">
+                    <h3>Muhammad Ehtesham</h3>
+                    <p>GIS Manager</p>
+                </div>
+                <div class="team-member">
+                    <h3>M.Shahid Usman</h3>
+                    <p>GIS Developer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 DSS Sahiwal | Powered by <a href="#">PICIIP</a>. All Rights Reserved.
+    </footer>
+</body>
+
+</html>
