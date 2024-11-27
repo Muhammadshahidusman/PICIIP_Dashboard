@@ -92,7 +92,8 @@ def submit_form(request):
         SubZone = request.POST.get('SubZone')
         abuttingRoad = request.POST.get('abuttingRoad')
         revenueDocument = request.FILES.get('revenueDocument')
-        cnic_path = request.FILES.get('cnicFile')
+        cnic_front = request.FILES.get('cnicfront')
+        cnic_back = request.FILES.get('cnicback')
         existingSituation = request.POST.get('existingSituation')
         
         # Validate that all fields are provided

@@ -222,24 +222,43 @@ input:checked + .slider:before {
         margin-left: 5px !important; 
        width: 95% !important;
     }
-.minimize-btn, #closePlotRequestModal {
-    background-color: transparent;
+
+    .d-flex {
+    gap: 5px; /* Space between buttons */
+}
+
+.modern-minimize,
+.modern-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
     border: none;
-    color: #000; /* Icon color */
-    font-size: 18px;
-    padding: 5px;
-    transition: background-color 0.2s ease;
 }
 
-.minimize-btn:hover, #closePlotRequestModal:hover {
-    background-color: #ffc107; /* Orange background on hover */
-    border-radius: 50%; /* Adds a rounded shape, similar to the close button */
-    color: #fff; /* White icon color on hover */
+/* Minimize Button */
+.modern-minimize {
+    background-color: #007bff; /* Blue */
+}
+.modern-minimize:hover {
+    background-color: #0056b3; /* Darker blue */
 }
 
-.minimize-btn:focus, #closePlotRequestModal:focus {
-    outline: none;
+/* Close Button */
+.modern-close {
+    background-color: #ff4444; /* Red */
 }
+.modern-close:hover {
+    background-color: #cc0000; /* Darker red */
+}
+
+
+
 
     </style>
 </head>
@@ -275,7 +294,7 @@ input:checked + .slider:before {
             
             
             <li class="nav-item">
-                <a class="nav-link" href="{% url "home" %}">
+                <a class="nav-link active" href="{% url "home" %}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                     </div>
@@ -1042,14 +1061,15 @@ input:checked + .slider:before {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">User Request Form</h5>
-                <div class="ml-auto">
-                    <button type="button" class="close minimize-btn" id="minimizeModal" aria-label="Minimize">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="close modern-minimize" id="minimizeModal" aria-label="Minimize">
                         <i class="fas fa-window-minimize"></i>
                     </button>
-                    <button type="button" class="close" id="closePlotRequestModal" aria-label="Close">
+                    <button type="button" class="close modern-close" id="closePlotRequestModal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                            
             </div>
             <div class="modal-body">
                 <form id="dataForm" enctype="multipart/form-data">
@@ -1206,11 +1226,11 @@ input:checked + .slider:before {
                         <div class="col-md-6">
                             <div class="row align-items-center">
                                 <div class="col-md-3">
-                                    <label for="revenueDocument">Attach CNIC(Front)<span style="color: red;">*</span></label>
+                                    <label for="cnicfront">Attach CNIC(front)<span style="color: red;">*</span></label>
                                 </div>
                                 <div class="col-md-9">
-                                    <input type="file" class="form-control-file" name="revenueDocument" id="revenueDocument" accept=".pdf,.png,.jpg,.jpeg" required>
-                                    <small id="revenueFileError" class="text-danger" style="display: none;">Please select a valid revenue document (PDF, PNG, JPG).</small>
+                                    <input type="file" class="form-control-file" name="cnicFile" id="cnicFile" accept=".pdf,.png,.jpg,.jpeg" required>
+                                    <small id="cnicFileError" class="text-danger" style="display: none;">Please select a valid CNIC file (PDF, PNG, JPG).</small>
                                 </div>
                             </div>
                         </div>
@@ -1232,7 +1252,7 @@ input:checked + .slider:before {
                         <div class="col-md-6">
                             <div class="row align-items-center">
                                 <div class="col-md-3">
-                                    <label for="cnicFile">Attach CNIC(Back)<span style="color: red;">*</span></label>
+                                    <label for="cnicback">Attach CNIC(Back)<span style="color: red;">*</span></label>
                                 </div>
                                 <div class="col-md-9">
                                     <input type="file" class="form-control-file" name="cnicFile" id="cnicFile" accept=".pdf,.png,.jpg,.jpeg" required>
@@ -1287,7 +1307,10 @@ input:checked + .slider:before {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Request List</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close modern-close" data-bs-dismiss="modal" aria-label="Close";">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                
             </div>
             <div class="modal-body" id="jqxGrid">
                 <!-- Your table or content goes here -->

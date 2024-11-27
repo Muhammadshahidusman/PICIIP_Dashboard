@@ -1286,7 +1286,8 @@ document.getElementById('toggleproposalALLLayers').addEventListener('change', fu
                 {name: 'abuttingRoad', type: 'string'},
                 {name: 'existingsituation', type: 'string'},
                 {name: 'revenue_document_path', type: 'string'},
-                {name: 'cnic_path', type: 'string'}
+                {name: 'cnic_front', type: 'string'},
+                {name: 'cnic_back', type: 'string'}
             ],
             url: plotRequestURL,
             root: 'data',
@@ -1334,12 +1335,21 @@ $("#jqxGrid").jqxGrid({
             }
         },
         {
-            text: 'CNIC File',
-            datafield: 'cnic_path',
+            text: 'CNIC Front File',
+            datafield: 'cnic_front',
             width: 150,
             cellclassname: applyRowClass,
             cellsrenderer: function (row, columnfield, value) {
-                return value ? `<a href="${value}" target="_blank" download>Download CNIC File</a>` : 'No File';
+                return value ? `<a href="${value}" target="_blank" download>Download CNIC Front File</a>` : 'No File';
+            }
+        },
+        {
+            text: 'CNIC Back File',
+            datafield: 'cnic_back',
+            width: 150,
+            cellclassname: applyRowClass,
+            cellsrenderer: function (row, columnfield, value) {
+                return value ? `<a href="${value}" target="_blank" download>Download CNIC Back File</a>` : 'No File';
             }
         }
     ],
